@@ -2,9 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamada de API com método GET</title>
 </head>
 <body>
-<h1>Hellos</h1>
+<div id="result"></div>
+
+<script>
+    // URL da API
+    const apiUrl = 'http://localhost:8080/event/todos-eventos';
+
+    // Função para fazer a chamada à API
+    async function fetchData() {
+        try {
+            // Faz a chamada à API usando o método GET
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            });
+
+            // Extrai os dados do formato JSON
+            const data = await response.json();
+
+            // Exibe os dados na página
+            document.getElementById('result').innerHTML = `
+                <p>Nome: ${data.name}</p>
+                <p>Local: ${data.local}</p>
+                <p>Descrição: ${data.descricao}</p>
+                <p>UUID: ${data.uuid}</p>
+            `;
+    }
+
+    // Chama a função fetchData quando a página é carregada
+    fetchData();
+</script>
 </body>
 </html>

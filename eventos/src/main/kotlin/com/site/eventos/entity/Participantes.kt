@@ -10,10 +10,8 @@ import java.util.UUID
 class Participantes {
     @Id
     var id:UUID = UUID.randomUUID()
-    var nameParticipante:String = ""
-
+    val nome: String= ""
+    val email: String=""
     @ManyToOne
-    @JoinColumn(name = "Evento_id")
-    lateinit var evento:Evento
-
+    lateinit var evento: Evento
 }
