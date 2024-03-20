@@ -1,5 +1,7 @@
 package com.site.eventos.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -10,8 +12,11 @@ import java.util.UUID
 class Participantes {
     @Id
     var id:UUID = UUID.randomUUID()
-    val nome: String= ""
-    val email: String=""
-    @ManyToOne
+    @Column(unique = true)
+    var nome: String= ""
+    var email: String=""
+
+    @ManyToOne()
+    @JsonIgnore
     lateinit var evento: Evento
 }

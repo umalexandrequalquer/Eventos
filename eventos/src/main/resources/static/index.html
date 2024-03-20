@@ -3,37 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chamada de API com método GET</title>
+    <title>Lista de Eventos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #eventos-lista {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            width: 80%;
+        }
+
+        li {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 5px;
+        }
+
+        li.participante {
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
-<div id="result"></div>
+<h1>Lista de Eventos</h1>
+<ul id="eventos-lista"></ul>
 
 <script>
-    // URL da API
-    const apiUrl = 'http://localhost:8080/event/todos-eventos';
-
-    // Função para fazer a chamada à API
-    async function fetchData() {
-        try {
-            // Faz a chamada à API usando o método GET
-            const response = await fetch(apiUrl, {
-                method: 'GET'
-            });
-
-            // Extrai os dados do formato JSON
-            const data = await response.json();
-
-            // Exibe os dados na página
-            document.getElementById('result').innerHTML = `
-                <p>Nome: ${data.name}</p>
-                <p>Local: ${data.local}</p>
-                <p>Descrição: ${data.descricao}</p>
-                <p>UUID: ${data.uuid}</p>
-            `;
+    // Função para fazer a requisição GET para a API
+    function carregarEventos() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:8080/event/todos-eventos", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var eventos = JSON.parse(xhr.responseText);
+                exibirEventos(eventos);
+            }
+        };
+        xhr.send();
     }
 
-    // Chama a função fetchData quando a página é carregada
-    fetchData();
+    // Função para exibir os eventos na página
+    function exibirEventos(eventos) {
+        var lista = document.getElementById("eventos-lista");
+        eventos.forEach(function (evento) {
+            var li = document.createElement("li");
+            li.innerHTML = "<strong>Nome:</strong> " + evento.nome + "<br><strong>Local:</strong> " + evento.local + "<br><strong>Descrição:</strong> " + evento.descricao;
+
+            var participantes = document.createElement("ul");
+            evento.participantes.forEach(function (participante) {
+                var participanteLi = document.createElement("li");
+                participanteLi.className = "participante";
+                participanteLi.innerHTML = "<strong>Nome:</strong> " + participante.nome + ", <strong>Email:</strong> " + participante.email;
+                participantes.appendChild(participanteLi);
+            });
+
+            li.appendChild(participantes);
+            lista.appendChild(li);
+        });
+    }
+
+    // Carregar os eventos quando a página carregar
+    window.onload = carregarEventos;
 </script>
 </body>
 </html>

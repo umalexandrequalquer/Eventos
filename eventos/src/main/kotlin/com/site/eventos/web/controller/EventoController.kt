@@ -21,9 +21,8 @@ class EventoController (private var eventoService: EventoService){
 
     }
     @PostMapping("/{eventoId}/participantes")
-    fun adicionarParticipante(@PathVariable eventoId: UUID, @RequestBody participante: Participantes): Evento {
-        return eventoService.adicionarParticipante(eventoId, participante)
+    fun adicionarParticipante(@PathVariable eventoId: UUID, @RequestBody participante: Participantes) {
+        eventoService.adicionarParticipante(eventoId, participante)
     }
-
 
 }

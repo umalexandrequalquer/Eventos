@@ -13,6 +13,6 @@ class Evento {
     val local: String?= null
     val descricao: String?= null
     @OneToMany(mappedBy = "evento", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val participantes: MutableList<Participantes> = mutableListOf()
+    var participantes: MutableList<Participantes> = ArrayList()
 
 }
